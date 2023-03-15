@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <com.ls.view.fish.FishRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    
+
+
+    <com.ls.view.fish.BottomView
+        android:id="@+id/bottomView"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+        <ImageView
+            android:id="@+id/tab1"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_1_4"
+            android:layout_weight="1"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tab2"
+            />
+        <ImageView
+            android:id="@+id/tab2"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_2_24"
+            android:layout_weight="1"
+            android:translationY="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tab1"
+            app:layout_constraintEnd_toStartOf="@id/tab3"
+            />
+        <ImageView
+            android:id="@+id/tab3"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_3_24"
+            android:layout_weight="1"
+            android:translationY="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tab2"
+            />
+    </LinearLayout>
+
+
+    <com.ls.view.fish.flower.FllowerAnimation
+        android:id="@+id/fllower"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.ls.view.fish.PathMeasureTestView
+        android:id="@+id/pathTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
