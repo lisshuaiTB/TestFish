@@ -30,7 +30,7 @@ import java.util.Random;
 /**
  * 撒花 用到的知识点： 1、android属性动画 2、Path路径绘制 3、贝塞尔曲线
  */
-public class FllowerAnimation extends View implements ValueAnimator.AnimatorUpdateListener {
+public class FlowerAnimationView extends View implements ValueAnimator.AnimatorUpdateListener {
     /**
      * 动画改变的属性值
      */
@@ -40,9 +40,9 @@ public class FllowerAnimation extends View implements ValueAnimator.AnimatorUpda
     /**
      * 小球集合
      */
-    private List<Fllower> fllowers1 = new ArrayList<Fllower>();
-    private List<Fllower> fllowers2 = new ArrayList<Fllower>();
-    private List<Fllower> fllowers3 = new ArrayList<Fllower>();
+    private List<Flower> fllowers1 = new ArrayList<Flower>();
+    private List<Flower> fllowers2 = new ArrayList<Flower>();
+    private List<Flower> fllowers3 = new ArrayList<Flower>();
     /**
      * 动画播放的时间
      */
@@ -56,15 +56,15 @@ public class FllowerAnimation extends View implements ValueAnimator.AnimatorUpda
      * 资源ID
      */
     // private int resId = R.drawable.fllower_love;
-    public FllowerAnimation(Context context) {
+    public FlowerAnimationView(Context context) {
         this(context,null);
     }
 
-    public FllowerAnimation(Context context, @Nullable AttributeSet attrs) {
+    public FlowerAnimationView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs,0);
     }
 
-    public FllowerAnimation(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public FlowerAnimationView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
@@ -125,7 +125,7 @@ public class FllowerAnimation extends View implements ValueAnimator.AnimatorUpda
     /**
      * 创建花
      */
-    private void builderFollower(int count, List<Fllower> fllowers) {
+    private void builderFollower(int count, List<Flower> fllowers) {
         int max = (int) (width * 3 / 4f);
         int min = (int) (width / 4f);
         Random random = new Random();
@@ -135,7 +135,7 @@ public class FllowerAnimation extends View implements ValueAnimator.AnimatorUpda
             CPoint CPoint = new CPoint(s, ylocations[random.nextInt(3)]);
             List<CPoint> points = builderPath(CPoint);
             drawFllowerPath(path, points);
-            Fllower fllower = new Fllower();
+            Flower fllower = new Flower();
             Bitmap bitmap = getBitmapFromVectorDrawable(getContext(),
                     R.drawable.ic_baseline_ac_unit_24);
             fllower.setPath(path);
@@ -233,8 +233,8 @@ public class FllowerAnimation extends View implements ValueAnimator.AnimatorUpda
      * @param canvas
      * @param fllowers
      */
-    private void drawFllower(Canvas canvas, List<Fllower> fllowers) {
-        for (Fllower fllower : fllowers) {
+    private void drawFllower(Canvas canvas, List<Flower> fllowers) {
+        for (Flower fllower : fllowers) {
             float[] pos = new float[2];
             // canvas.drawPath(fllower.getPath(),mPaint);
             pathMeasure.setPath(fllower.getPath(), false);
@@ -280,8 +280,8 @@ public class FllowerAnimation extends View implements ValueAnimator.AnimatorUpda
      * @param value
      * @param fllowers
      */
-    private void updateValue(float value, List<Fllower> fllowers) {
-        for (Fllower fllower : fllowers) {
+    private void updateValue(float value, List<Flower> fllowers) {
+        for (Flower fllower : fllowers) {
             fllower.setValue(value);
         }
     }

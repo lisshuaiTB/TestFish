@@ -25,7 +25,7 @@ inline fun Context.fixDensity() {
     val adm: DisplayMetrics = resources.displayMetrics
     //density = px/dp
 //        val td = adm.widthPixels / 1920f
-    val td = adm.heightPixels / 760f
+    val td = adm.heightPixels / 720f
     LLog.d("fixDensity -- ${adm.widthPixels}  ${adm.heightPixels}  ${adm.density} ${adm.scaledDensity}  td=$td  ")
     // px = dp * (dpi / 160)
     val dpi = (160 * td).toInt()
@@ -35,6 +35,7 @@ inline fun Context.fixDensity() {
 
     adm.densityDpi = dpi
 }
+
 
 val Number.dip
     get() = TypedValue.applyDimension(

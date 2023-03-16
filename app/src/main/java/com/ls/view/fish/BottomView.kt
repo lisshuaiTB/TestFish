@@ -79,8 +79,9 @@ class BottomView :View{
 
         val lineH = 0.3f * height
         val grooveH = 0.6f * height
+        val radius = 0.2f * height
         //绘制圆
-        canvas.drawCircle(centerTabWith + keyAnimal, lineH, 40.dip, mPaint)
+        canvas.drawCircle(centerTabWith + keyAnimal, lineH, radius, mPaint)
 
 
         mPath.reset()
@@ -150,7 +151,6 @@ class BottomView :View{
 
             start()
         }
-
 
 
     }

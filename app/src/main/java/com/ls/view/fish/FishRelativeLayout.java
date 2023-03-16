@@ -4,7 +4,6 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
@@ -49,7 +48,7 @@ public class FishRelativeLayout extends RelativeLayout {
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         ivFish.setLayoutParams(layoutParams);
 
-        ivFish.setBackgroundColor(Color.YELLOW);
+//        ivFish.setBackgroundColor(Color.YELLOW);
 
         // 创建 fish 并添加到 ImageView
         fishDrawable = new FishDrawable();
@@ -144,19 +143,32 @@ public class FishRelativeLayout extends RelativeLayout {
         /**
          * 在路径上慢慢移动到手指按下的位置 -- 使用 ObjectAnimator 方式2实现 -- setX,setY
          */
-//        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(ivFish, "x",
-//                ivFish.getX(), touchX - fishImageViewMiddle.x);
-//        objectAnimator1.setDuration(2000);
-//        objectAnimator1.start();
-//
-//        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(ivFish, "y",
-//                ivFish.getY(), touchY - fishImageViewMiddle.y);
-//        objectAnimator2.setDuration(2000);
-//        objectAnimator2.start();
 
+//        fun2(fishImageViewMiddle);
         /**
          * 在路径上慢慢移动到手指按下的位置 -- 使用 ObjectAnimator 方式3实现 -- setX,setY -- 通过Path
          */
+        fun3(fishImageViewMiddle);
+
+    }
+
+    void fun2(PointF fishImageViewMiddle) {
+        ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(ivFish, "x",
+                ivFish.getX(), touchX - fishImageViewMiddle.x);
+        objectAnimator1.setDuration(2000);
+        objectAnimator1.start();
+
+        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(ivFish, "y",
+                ivFish.getY(), touchY - fishImageViewMiddle.y);
+        objectAnimator2.setDuration(2000);
+        objectAnimator2.start();
+    }
+
+
+    /**
+     * 在路径上慢慢移动到手指按下的位置 -- 使用 ObjectAnimator 方式3实现 -- setX,setY -- 通过Path
+     */
+    public void fun3(PointF fishImageViewMiddle) {
         // 起始点
         PointF fishMiddle = new PointF(ivFish.getX() + fishImageViewMiddle.x,
                 ivFish.getY() + fishImageViewMiddle.y);
@@ -197,7 +209,6 @@ public class FishRelativeLayout extends RelativeLayout {
         });
 
         objectAnimator.start();
-
     }
 
     public static float includedAngle(PointF O, PointF A, PointF B) {
@@ -218,7 +229,7 @@ public class FishRelativeLayout extends RelativeLayout {
         float direction = (A.y - B.y) / (A.x - B.x) - (O.y - B.y) / (O.x - B.x);
 
         // 点击在鱼头延长线上 -- angleAOB == 0 ---点击在鱼尾延长线上 angleAOB 180
-        if(direction == 0){
+        if (direction == 0) {
             if (AOB >= 0) {
                 return 0;
             } else
@@ -235,6 +246,7 @@ public class FishRelativeLayout extends RelativeLayout {
     // 会执行吗？？
     @Override
     protected void onDraw(Canvas canvas) {
+        LLog.INSTANCE.d("123123");
         if (touchX >= 0 && touchY >= 0) {
             mPaint.setAlpha(alpha);
             canvas.drawCircle(touchX, touchY, ripple * 150, mPaint);

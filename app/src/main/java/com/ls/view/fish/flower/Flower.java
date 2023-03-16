@@ -5,7 +5,7 @@ import android.graphics.Path;
 
 import java.io.Serializable;
 
-public class Fllower implements Serializable {
+public class Flower implements Serializable {
  
     private static final long serialVersionUID = 1L;
     private Bitmap image;

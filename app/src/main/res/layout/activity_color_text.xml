@@ -16,12 +16,14 @@
         app:changeColor="@color/teal_200" />
 
     <Button
+        android:id="@+id/btn_l_to_r"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="leftToRight"
         android:text="左到右" />
 
     <Button
+        android:id="@+id/btn_r_to_l"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="rightToLeft"

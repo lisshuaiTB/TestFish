@@ -1,4 +1,4 @@
-package com.ls.view.fish
+package com.ls.view.fish.path
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -7,8 +7,10 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.view.animation.LinearInterpolator
-import androidx.core.animation.addListener
 import androidx.core.animation.doOnEnd
+import com.ls.view.fish.R
+import com.ls.view.fish.dip
+import com.ls.view.fish.getBitmapFromVectorDrawable
 import kotlin.math.atan2
 
 

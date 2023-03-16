@@ -7,7 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.TypedValue;
+import android.view.MotionEvent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -129,4 +129,10 @@ public class ColorTrackTextView extends AppCompatTextView {
         this.mDirection = direction;
     }
 
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        LLog.INSTANCE.d("");
+        return super.onTouchEvent(event);
+    }
 }
