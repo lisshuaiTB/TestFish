@@ -185,8 +185,8 @@ class PathMeasureTestView @JvmOverloads constructor(
 
     val s = "HELLO"
     fun startAnimal() {
+        currentConour = -1
         measure?.nextContour()
-
         val valueAnimator = ValueAnimator.ofFloat(0f, 1f)
         valueAnimator.addUpdateListener { animation ->
             // 获取动画进行的百分比
@@ -199,7 +199,9 @@ class PathMeasureTestView @JvmOverloads constructor(
         valueAnimator.doOnEnd {
             Log.d("PathMeasureTestView", "---onend")
             currentConour++
-            startAnimal()
+            if(currentConour < 3) {
+                valueAnimator.start()
+            }
         }
 
         // 设置动画的属性

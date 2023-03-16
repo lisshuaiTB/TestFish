@@ -16,9 +16,10 @@ import kotlin.math.abs
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     val list = mutableListOf<ImageView>()
-    val listColor = mutableListOf(R.color.purple_200, R.color.purple_500, R.color.purple_700)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.fixDensity()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -30,7 +31,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.tab1.setOnClickListener {
             changeTab(0)
-
         }
 
         binding.tab2.setOnClickListener {
@@ -47,32 +47,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-    var current = 0
-    fun changeTab(index: Int) {
-
-        ValueAnimator.ofFloat(current.toFloat(), index.toFloat()).run {
-            duration = 500
-            addUpdateListener {
-                var value = it.animatedValue as Float
-                val cv = if (index-current == 1)abs( value - current) else  value/2f
-
-                val c1 =  ContextCompat.getColor(this@MainActivity, listColor[current])
-                val c2 =  ContextCompat.getColor(this@MainActivity, listColor[index])
-                val c = ArgbEvaluator().evaluate(cv, c1,c2)
-
-                binding.bottomView.setIndex(value, c as Int)
-
-                Log.d("xxx", " $cv  $c1  $c2  $c   $current->$index")
-
-            }
-            doOnEnd {
-                current =index
-            }
-
-            start()
-        }
-
+    fun changeTab(index:Int){
+        binding.bottomView.changeTab(index)
         list.forEachIndexed { i, imageView ->
             if (i == index) {
                 imageView.translationY = 0f
@@ -80,8 +56,7 @@ class MainActivity : AppCompatActivity() {
                 imageView.translationY = 25.dip
             }
         }
-
-
     }
+
 
 }

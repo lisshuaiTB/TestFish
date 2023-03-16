@@ -1,5 +1,7 @@
 package com.ls.view.fish
 
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Canvas
@@ -10,8 +12,13 @@ import android.graphics.Paint.Style
 import android.graphics.Path
 import android.graphics.PathEffect
 import android.util.AttributeSet
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
+import android.widget.ImageView
+import androidx.core.animation.doOnEnd
+import androidx.core.content.ContextCompat
+import kotlin.math.abs
 
 class BottomView :View{
     constructor(context: Context) : this(context,null)
@@ -39,12 +46,15 @@ class BottomView :View{
         }
 
          mPath = Path()
+
+
     }
 
 
     var currentIndext = 0f
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+
 
         mPaint.color = mColor
         val indexValue = currentIndext
@@ -58,7 +68,8 @@ class BottomView :View{
 
         val keyAnimal = tabWith * indexValue
         canvas.save()
-        //绘制阴影
+        setLayerType(LAYER_TYPE_SOFTWARE, null);
+        //绘制阴影 开启硬件加速无效果
         mPaint.setShadowLayer(
             15f,
             5f,
@@ -69,7 +80,7 @@ class BottomView :View{
         val lineH = 0.3f * height
         val grooveH = 0.6f * height
         //绘制圆
-        canvas.drawCircle(centerTabWith + keyAnimal, lineH, 20.dip, mPaint)
+        canvas.drawCircle(centerTabWith + keyAnimal, lineH, 40.dip, mPaint)
 
 
         mPath.reset()
@@ -116,12 +127,36 @@ class BottomView :View{
 
 
 
+    val listColor = mutableListOf(R.color.purple_200, R.color.purple_500, R.color.purple_700)
+    var current = 0
+    fun changeTab(index: Int) {
+
+        ValueAnimator.ofFloat(current.toFloat(), index.toFloat()).run {
+            duration = 500
+            addUpdateListener {
+                var value = it.animatedValue as Float
+                val cv = if (index-current == 1) abs( value - current) else  value/2f
+
+                val c1 =  ContextCompat.getColor(context, listColor[current])
+                val c2 =  ContextCompat.getColor(context, listColor[index])
+                val c = ArgbEvaluator().evaluate(cv, c1,c2)
+                setIndex(value, c as Int)
+                Log.d("xxx", " $cv  $c1  $c2  $c   $current->$index")
+
+            }
+            doOnEnd {
+                current =index
+            }
+
+            start()
+        }
+
+
+
+    }
+
+
+
 
 }
 
-val Number.dip
-    get() = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        this.toFloat(),
-        Resources.getSystem().displayMetrics
-    )
