@@ -12,9 +12,13 @@ class Tab1 : BaseVbFragment<FragmentTab1Binding>() {
             setAnimation()
         }
 
+        mBinding.fishLayout.setOnClickListener {
+            mBinding.fllower.startAnimation()
+        }
+
         mBinding.pathTest.setOnClickListener {
             mBinding.pathTest.startAnimal()
-            mBinding.fllower.startAnimation()
+
         }
 
     }

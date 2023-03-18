@@ -9,7 +9,6 @@ import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.core.animation.doOnEnd
 import com.ls.view.fish.R
-import com.ls.view.fish.dip
 import com.ls.view.fish.getBitmapFromVectorDrawable
 import kotlin.math.atan2
 
@@ -18,7 +17,7 @@ class PathMeasureTestView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
     val paint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG).apply {
-        style = Paint.Style.STROKE
+//        style = Paint.Style.STROKE
         strokeWidth = 5f
 
     }
@@ -52,24 +51,29 @@ class PathMeasureTestView @JvmOverloads constructor(
         test6(canvas)
     }
 
+
     var measure: PathMeasure? = null
     var currentConour = -1
+
     private fun test6(canvas: Canvas?) {
 
 //        path.addCircle(0f, 0f, 200f, Path.Direction.CW) // 添加一个圆形
-        val s = "SOS"
-        paint.textSize = 180.dip
-        paint.getTextPath(s, 0, s.length, (-180).dip, 0f, path)
-        path.fillType = Path.FillType.EVEN_ODD
+        val text = "中瓴智行"
+        val size = width / text.length.toFloat()
+        paint.textSize = size
+        paint.getTextPath(text, 0, text.length, -size * 2, 0f, path)
 
-        measure = PathMeasure(path, false) // 创建 PathMeasure
-        //下一个路径
-        for (i in 0 .. currentConour%s.length) {
-//            Log.i("PathMeasureTestView", "nextContour---$currentConour")
-            if ( measure?.nextContour() == false){
-                measure = PathMeasure(path, false)
-            }
+        if (measure == null) {
+            measure = PathMeasure(path, false)
         }
+//        measure = PathMeasure(path, false) // 创建 PathMeasure
+        //下一个路径
+//        for (i in 0..currentConour % text.length) {
+//            Log.i("PathMeasureTestView", "nextContour---$currentConour")
+//            if (measure?.nextContour() == false) {
+//                measure = PathMeasure(path, false)
+//            }
+//        }
 
 //        mMatrix.reset()
         // 获取当前位置的坐标以及趋势的矩阵
@@ -187,8 +191,8 @@ class PathMeasureTestView @JvmOverloads constructor(
 
     val s = "HELLO"
     fun startAnimal() {
-        currentConour = -1
-        measure?.nextContour()
+//        currentConour = -1
+//        measure?.nextContour()
         val valueAnimator = ValueAnimator.ofFloat(0f, 1f)
         valueAnimator.addUpdateListener { animation ->
             // 获取动画进行的百分比
@@ -200,14 +204,13 @@ class PathMeasureTestView @JvmOverloads constructor(
         }
         valueAnimator.doOnEnd {
             Log.d("PathMeasureTestView", "---onend")
-            currentConour++
-            if(currentConour < 3) {
+//            currentConour++
+            if (measure?.nextContour() == true)
                 valueAnimator.start()
-            }
         }
 
         // 设置动画的属性
-        valueAnimator.duration = 3000
+        valueAnimator.duration = 2000
 //        valueAnimator.repeatCount = 0
         valueAnimator.interpolator = LinearInterpolator()
 //        valueAnimator.repeatMode = ValueAnimator.RESTART
