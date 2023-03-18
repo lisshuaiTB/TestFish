@@ -78,7 +78,7 @@ public class ColorTrackTextView extends AppCompatTextView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-
+        LLog.INSTANCE.d("onDraw...");
         int currentPoint = (int) (mCurrentProgress * getWidth());
 
         // 从左边到右边变色

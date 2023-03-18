@@ -39,6 +39,7 @@ class BottomView :View{
     var mColor:Int = Color.parseColor("#FFBB86FC")
     fun initData(){
 
+        setLayerType(LAYER_TYPE_HARDWARE,null)
          mPaint = Paint().apply {
             isAntiAlias = true
             isDither = true
@@ -53,9 +54,7 @@ class BottomView :View{
 
     var currentIndext = 0f
     override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-
-
+        LLog.d("onDraw.....")
         mPaint.color = mColor
         val indexValue = currentIndext
         //先固定分为三等分
@@ -68,7 +67,6 @@ class BottomView :View{
 
         val keyAnimal = tabWith * indexValue
         canvas.save()
-        setLayerType(LAYER_TYPE_SOFTWARE, null);
         //绘制阴影 开启硬件加速无效果
         mPaint.setShadowLayer(
             15f,
@@ -113,7 +111,7 @@ class BottomView :View{
         mPath.lineTo(width.toFloat(), height.toFloat())
         mPath.lineTo(0f, height.toFloat())
         mPath.close()
-        //canvas.clipPath(path)
+//        canvas.clipPath(mPath)
 //        mPaint.pathEffect = CornerPathEffect(50.dip)
         canvas.drawPath(mPath, mPaint)
     }
@@ -152,7 +150,16 @@ class BottomView :View{
             start()
         }
 
+    }
 
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        LLog.d("onMeasure...")
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        LLog.d("onLayout...")
     }
 
 

@@ -6,8 +6,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.annotation.Nullable;
 
 public class Bezier1 extends View {
  
@@ -17,18 +20,27 @@ public class Bezier1 extends View {
     private PointF start, end, control;
  
     public Bezier1(Context context) {
-        super(context);
+        this(context,null);
+
+    }
+
+    public Bezier1(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
+
+    void init(){
         mPaint = new Paint();
         mPaint.setColor(Color.BLACK);
         mPaint.setStrokeWidth(8);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setTextSize(60);
- 
+
         start = new PointF(0,0);
         end = new PointF(0,0);
         control = new PointF(0,0);
     }
- 
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
