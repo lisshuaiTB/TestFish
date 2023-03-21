@@ -17,8 +17,8 @@ class PathMeasureTestView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
     val paint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG).apply {
-//        style = Paint.Style.STROKE
-        strokeWidth = 5f
+        style = Paint.Style.STROKE
+        strokeWidth = 3f
 
     }
 
@@ -54,45 +54,54 @@ class PathMeasureTestView @JvmOverloads constructor(
 
     var measure: PathMeasure? = null
     var currentConour = -1
-
+    var dst = Path()
+    var isDrawSegment = false
     private fun test6(canvas: Canvas?) {
 
 //        path.addCircle(0f, 0f, 200f, Path.Direction.CW) // 添加一个圆形
         val text = "中瓴智行"
+//        val text = "ABC"
         val size = width / text.length.toFloat()
         paint.textSize = size
-        paint.getTextPath(text, 0, text.length, -size * 2, 0f, path)
+        paint.getTextPath(text, 0, text.length, -size * (text.length.toFloat() / 2), 0f, path)
 
         if (measure == null) {
             measure = PathMeasure(path, false)
         }
-//        measure = PathMeasure(path, false) // 创建 PathMeasure
-        //下一个路径
-//        for (i in 0..currentConour % text.length) {
-//            Log.i("PathMeasureTestView", "nextContour---$currentConour")
-//            if (measure?.nextContour() == false) {
-//                measure = PathMeasure(path, false)
-//            }
-//        }
 
-//        mMatrix.reset()
+
+        mMatrix.reset()
         // 获取当前位置的坐标以及趋势的矩阵
         measure?.let {
 //            Log.d("PathMeasureTestView", "---currentValue--${it.length * currentValue}")
             it.getMatrix(
+                //测量点与当前path起始位置的距离
                 it.length * currentValue,
+                //测量点的矩阵
                 mMatrix,
+                // TANGENT_MATRIX_FLAG 正切值
+                // POSITION_MATRIX_FLAG 位置
                 PathMeasure.TANGENT_MATRIX_FLAG or PathMeasure.POSITION_MATRIX_FLAG
             )
-        }
 
+        }
 
         mMatrix.preTranslate(
             -mBitmap.width / 2f,
             -mBitmap.height / 2f
         )   // 将图片绘制中心调整到与当前点重合(注意:此处是前乘pre)
 
+        paint.color = Color.BLACK
         canvas?.drawPath(path, paint)
+        if (isDrawSegment) {
+//            dst.reset()
+            measure?.let {
+                //获取部分线段
+                it.getSegment(it.length * currentValue, it.length * currentValue + 20f, dst, true)
+            }
+            paint.color = Color.RED
+            canvas?.drawPath(dst, paint)
+        }
         canvas?.drawBitmap(mBitmap, mMatrix, paint) // 绘制箭头
     }
 
@@ -106,19 +115,19 @@ class PathMeasureTestView @JvmOverloads constructor(
         measure.getPosTan(measure.length * currentValue, pos, tan) // 获取当前位置的坐标以及趋势
 
         mMatrix.reset()
+        // 计算图片旋转角度
+        // atan2(y,x) 返回的是反正切的弧度值，再 乘以角度和弧度的比值，转为角度值
         val degrees = (atan2(
             tan[1].toDouble(),
             tan[0].toDouble()
-        ) * 180.0 / Math.PI).toFloat() // 计算图片旋转角度
-        mMatrix.postRotate(
-            degrees,
-            mBitmap?.width?.div(2f) ?: 0f,
-            mBitmap?.height?.div(2f) ?: 0f
-        ) // 旋转图片
-        mMatrix.postTranslate(
-            pos[0] - mBitmap?.width?.div(2)!!,
-            pos[1] - mBitmap?.height?.div(2)!!
-        )  // 将图片绘制中心调整到与当前点重合
+        ) * 180.0 / Math.PI).toFloat()
+
+
+        // 设置旋转角度  并且以图片的中心点进行旋转
+        mMatrix.postRotate(degrees, mBitmap?.width?.div(2f) ?: 0f, mBitmap?.height?.div(2f) ?: 0f)
+
+        // 进行偏移，因为直接绘制的话，箭头会在轨道之外，需要挪动箭头的宽和高各一半
+        mMatrix.postTranslate(pos[0] - mBitmap?.width?.div(2)!!, pos[1] - mBitmap?.height?.div(2)!!)
 
         canvas?.drawPath(path, paint)
         canvas?.drawBitmap(mBitmap!!, mMatrix, paint) // 绘制箭头
@@ -200,6 +209,7 @@ class PathMeasureTestView @JvmOverloads constructor(
             currentValue = mAnimatorValue
 //            Log.d("PathMeasureTestView", "---currentValue--$currentValue")
 //            measure?.nextContour()
+            isDrawSegment = true
             postInvalidate() // 更新界面
         }
         valueAnimator.doOnEnd {
@@ -207,6 +217,11 @@ class PathMeasureTestView @JvmOverloads constructor(
 //            currentConour++
             if (measure?.nextContour() == true)
                 valueAnimator.start()
+            else {
+                measure = null
+                isDrawSegment = false
+                invalidate()
+            }
         }
 
         // 设置动画的属性

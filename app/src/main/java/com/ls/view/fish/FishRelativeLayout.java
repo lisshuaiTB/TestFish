@@ -152,6 +152,8 @@ public class FishRelativeLayout extends RelativeLayout {
 
     }
 
+
+
     void fun2(PointF fishImageViewMiddle) {
         ObjectAnimator objectAnimator1 = ObjectAnimator.ofFloat(ivFish, "x",
                 ivFish.getX(), touchX - fishImageViewMiddle.x);
@@ -167,6 +169,7 @@ public class FishRelativeLayout extends RelativeLayout {
 
     /**
      * 在路径上慢慢移动到手指按下的位置 -- 使用 ObjectAnimator 方式3实现 -- setX,setY -- 通过Path
+     * @param fishImageViewMiddle  鱼的中心点
      */
     public void fun3(PointF fishImageViewMiddle) {
         // 起始点
@@ -216,10 +219,11 @@ public class FishRelativeLayout extends RelativeLayout {
         float OALength = (float) Math.sqrt((A.x - O.x) * (A.x - O.x) + (A.y - O.y) * (A.y - O.y));
         // OB的长度
         float OBLength = (float) Math.sqrt((B.x - O.x) * (B.x - O.x) + (B.y - O.y) * (B.y - O.y));
-        // OA*OB=(Ax-Ox)*(Bx-Ox)+(Ay-Oy)*(By-Oy)
-        float AOB = (A.x - O.x) * (B.x - O.x) + (A.y - O.y) * (B.y - O.y);
+        //向量的数量积的坐标表示：a·b=x·x'+y·y'
+        // 向量的数量积 OA*OB=(Ax-Ox)*(Bx-Ox)+(Ay-Oy)*(By-Oy)
+        float OAOB = (A.x - O.x) * (B.x - O.x) + (A.y - O.y) * (B.y - O.y);
         // cosAOB = (OA*OB)/(|OA|*|OB|)
-        float cosAOB = AOB / (OALength * OBLength);
+        float cosAOB = OAOB / (OALength * OBLength);
 
         // 角度 -- 反余弦
         float angleAOB = (float) Math.toDegrees(Math.acos(cosAOB));
@@ -230,7 +234,7 @@ public class FishRelativeLayout extends RelativeLayout {
 
         // 点击在鱼头延长线上 -- angleAOB == 0 ---点击在鱼尾延长线上 angleAOB 180
         if (direction == 0) {
-            if (AOB >= 0) {
+            if (OAOB >= 0) {
                 return 0;
             } else
                 return 180;
